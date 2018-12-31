@@ -1,0 +1,35 @@
+#Reference to http://astyle.sourceforge.net/astyle.html for more details
+#To install: $ sudo apt-get install astyle
+#To run: $ astyle --recursive --options="scripts/astyle.rc" "*.cpp" "*.h"
+
+#Bracket Style
+--style=java
+
+#Tab Options(Also this is the default)
+--indent=spaces=4
+
+#Indentation Options
+--indent-switches
+--indent-labels
+--indent-col1-comments
+--min-conditional-indent=0
+
+#Padding Options
+--pad-oper
+--pad-header
+--unpad-paren
+--align-pointer=name
+--align-reference=name
+
+#Formatting Options
+--add-brackets
+--convert-tabs
+--max-code-length=100
+--break-after-logical
+
+#Do not retain a backup of the original file. The original file is purged after it is formatted.
+--suffix=none
+
+--lineend=linux
+
+--exclude=build
