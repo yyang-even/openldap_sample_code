@@ -31,3 +31,8 @@ add_executable(set_debug_level set_debug_level.cpp)
 target_link_libraries(set_debug_level
     ${OPENLDAP_LIBRARIES}
 )
+
+add_executable(synchronous_anonymous_search synchronous_anonymous_search.cpp)
+target_link_libraries(synchronous_anonymous_search
+    ${OPENLDAP_LIBRARIES}
+)
