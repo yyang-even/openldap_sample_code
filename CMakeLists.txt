@@ -36,3 +36,8 @@ add_executable(synchronous_anonymous_search synchronous_anonymous_search.cpp)
 target_link_libraries(synchronous_anonymous_search
     ${OPENLDAP_LIBRARIES}
 )
+
+add_executable(synch_search_with_filter synch_search_with_filter.cpp)
+target_link_libraries(synch_search_with_filter
+    ${OPENLDAP_LIBRARIES}
+)
