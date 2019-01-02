@@ -1,7 +1,8 @@
 #pragma once
 
-#include <memory>
+#include <cassert>
 #include <iostream>
+#include <memory>
 
 #include <ldap.h>
 
@@ -28,6 +29,36 @@ inline auto ldap_init_with_log(const std::string &uri) {
     return ld;
 }
 
+template <std::size_t NUMBER_ATTRIBUTES>
+class AttributesArray {
+    char *mHead[NUMBER_ATTRIBUTES + 1];
+public:
+    AttributesArray(const AttributesArray &) = delete;
+    AttributesArray &operator = (const AttributesArray &) = delete;
+    AttributesArray(AttributesArray &&other) = default;
+    AttributesArray &operator = (AttributesArray &&other) = default;
+    AttributesArray(std::initializer_list<const char *> attributes) {
+        assert(attributes.size() <= NUMBER_ATTRIBUTES);
+        for (std::size_t i = 0; i < attributes.size(); ++i) {
+            const auto *str = *(attributes.begin() + i);
+            const std::size_t length = strlen(str) + 1;
+            mHead[i] = new char[length] {};
+            strncpy(mHead[i], str, length);
+        }
+        mHead[NUMBER_ATTRIBUTES] = nullptr;
+    }
+
+    ~AttributesArray() {
+        for (auto **p = mHead; *p != nullptr; ++p) {
+            delete[](*p);
+            *p = nullptr;
+        }
+    }
+
+    auto C_StrArray() {
+        return mHead;
+    }
+};
 
 class LdapConnection {
     std::unique_ptr<LDAP, decltype(&ldap_unbind_with_log)> mLdap;
