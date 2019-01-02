@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+
 #include <iostream>
 #include <memory>
 
@@ -27,6 +28,17 @@ inline auto ldap_init_with_log(const std::string &uri) {
     LDAP *ld = nullptr;
     Call_LDAP_Func(ldap_initialize, &ld, uri.c_str());
     return ld;
+}
+
+/**
+ * The protocol version used by the library defaults to LDAPv2 (now historic), which
+ *  corresponds to the LDAP_VERSION2 macro. Application developers are encouraged to
+ *  explicitly set LDAP_OPT_PROTOCOL_VERSION to LDAPv3, using the LDAP_VERSION3 macro,
+ *  or to allow users to select the protocol version.
+ */
+inline void use_ldap_version3() {
+    static const auto DEFAULT_LDAP_VERSION = LDAP_VERSION3;
+    Call_LDAP_Func(ldap_set_option, nullptr, LDAP_OPT_PROTOCOL_VERSION, &DEFAULT_LDAP_VERSION);
 }
 
 template <std::size_t NUMBER_ATTRIBUTES>
