@@ -1,7 +1,8 @@
 #pragma once
 
-#include <memory>
+#include <cassert>
 #include <iostream>
+#include <memory>
 
 #include <ldap.h>
 
@@ -28,6 +29,46 @@ inline auto ldap_init_with_log(const std::string &uri) {
     return ld;
 }
 
+
+class AttributesArray {
+    char **mHead = nullptr;
+    char **mEnd = nullptr;
+    char **mCurrent = nullptr;
+public:
+    AttributesArray(const AttributesArray &) = delete;
+    AttributesArray &operator = (const AttributesArray &) = delete;
+    AttributesArray(AttributesArray &&other) = default;
+    AttributesArray &operator = (AttributesArray &&other) = default;
+    explicit AttributesArray(const unsigned numAttributes) {
+        const size_t ACTUAL_SIZE = numAttributes + 1;
+        mCurrent = mHead = new char *[ACTUAL_SIZE] {};
+        mEnd = mHead + numAttributes;
+    }
+
+    ~AttributesArray() {
+        if (mHead) {
+            for (auto **p = mHead; *p != nullptr; ++p) {
+                delete[](*p);
+                *p = nullptr;
+            }
+            delete[] mHead;
+            mHead = nullptr;
+        }
+    }
+
+    void PushBack(const std::string &attribute) {
+        assert(mCurrent != mEnd);
+        if (!attribute.empty()) {
+            *mCurrent = new char[attribute.length() + 1] {};
+            strncpy(*mCurrent, attribute.c_str(), attribute.length() + 1);
+            ++mCurrent;
+        }
+    }
+
+    auto C_StrArray() {
+        return mHead;
+    }
+};
 
 class LdapConnection {
     std::unique_ptr<LDAP, decltype(&ldap_unbind_with_log)> mLdap;
