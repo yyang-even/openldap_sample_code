@@ -137,4 +137,16 @@ public:
     auto BerSetOption(const int option, const void *invalue) const {
         return ber_set_option(mLdap.get(), option, invalue);
     }
+
+    void SynchSimpleBind(const std::string &dn, const std::string &password) const {
+        struct berval oUserCredential;
+        oUserCredential.bv_len = password.length();
+        oUserCredential.bv_val = new char[oUserCredential.bv_len + 1] {};  // Be ware of the memory leak! Remember to free the memory!
+        strcpy(oUserCredential.bv_val, password.c_str());
+
+        Call_LDAP_Func(ldap_sasl_bind_s, mLdap.get(), dn.c_str(), LDAP_SASL_SIMPLE, &oUserCredential,
+                       nullptr, nullptr, nullptr);
+
+        delete [] oUserCredential.bv_val;
+    }
 };
