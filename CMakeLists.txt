@@ -46,3 +46,8 @@ add_executable(synch_search_with_attributes synch_search_with_attributes.cpp)
 target_link_libraries(synch_search_with_attributes
     ${OPENLDAP_LIBRARIES}
 )
+
+add_executable(synchronous_bind_search synchronous_bind_search.cpp)
+target_link_libraries(synchronous_bind_search
+    ${OPENLDAP_LIBRARIES}
+)
