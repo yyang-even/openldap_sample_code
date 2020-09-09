@@ -1,0 +1,18 @@
+default_stages: [commit]
+repos:
+  - repo: https://github.com/yyang-even/yyLinuxScripts
+    rev: master
+    hooks:
+      - id: astyle-c
+      - id: astyle-cpp
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: check-executables-have-shebangs
+        stages: [commit]
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-xml
+      - id: check-yaml
+      - id: trailing-whitespace
+        stages: [commit]
