@@ -1,10 +1,12 @@
 default_stages: [commit]
 repos:
   - repo: https://github.com/yyang-even/yyLinuxScripts
-    rev: master
+    rev: 3cfc3be35cc6fd1bfd7502a6105dc5c4f2ceeb5d
     hooks:
       - id: astyle-c
       - id: astyle-cpp
+      - id: shfmt
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
     hooks:
