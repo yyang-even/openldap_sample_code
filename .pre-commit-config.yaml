@@ -1,7 +1,7 @@
 default_stages: [commit]
 repos:
-  - repo: https://github.com/yyang-even/yyLinuxScripts
-    rev: 3cfc3be35cc6fd1bfd7502a6105dc5c4f2ceeb5d
+  - repo: https://github.com/yyang-even/yyLinuxConfig
+    rev: e475e920fedb28f7bff2a58d1142a255fd3e86c4
     hooks:
       - id: astyle-c
       - id: astyle-cpp
